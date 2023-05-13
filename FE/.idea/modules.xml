@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+<<<<<<< HEAD
+      <module fileurl="file://$PROJECT_DIR$/.idea/book-fair-web-client.iml" filepath="$PROJECT_DIR$/.idea/book-fair-web-client.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/book-fair-client.iml" filepath="$PROJECT_DIR$/.idea/book-fair-client.iml" />
+>>>>>>> 81b386be539aa08eeec739e7538994cf541875cb
+    </modules>
+  </component>
+</project>

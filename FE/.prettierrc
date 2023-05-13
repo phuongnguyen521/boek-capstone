@@ -1,0 +1,19 @@
+{
+<<<<<<< HEAD
+  "semi": true,
+  "trailingComma": "es5",
+  "singleQuote": false,
+  "tabWidth": 4,
+  "useTabs": false,
+  "singleAttributePerLine": false,
+  "plugins": []
+=======
+    "semi": true,
+    "trailingComma": "es5",
+    "singleQuote": true,
+    "tabWidth": 4,
+    "useTabs": false,
+    "singleAttributePerLine": false,
+    "plugins": []
+>>>>>>> 81b386be539aa08eeec739e7538994cf541875cb
+}

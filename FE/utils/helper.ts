@@ -1,0 +1,283 @@
+<<<<<<< HEAD
+import { format } from "date-fns";
+import { vi } from "date-fns/locale";
+import slugify from "slugify";
+import { z } from "zod";
+import { BookFormats, IBookFormat } from "../constants/BookFormats";
+import { hexColors } from "../constants/Colors";
+import { IBook } from "../types/Book/IBook";
+import { IBookProduct } from "../types/Book/IBookProduct";
+import { CampaignFormats } from "../constants/CampaignFormats";
+import { BookProductStatuses } from "../constants/BookProductStatuses";
+import { CampaignStatuses } from "../constants/CampaignStatuses";
+
+
+export function classNames(...classes: string[]) {
+    return classes.filter(Boolean).join(" ");
+}
+
+export const isAddToCartDisabled = (product: IBookProduct | undefined) => {
+    return product?.status !==
+        BookProductStatuses.Selling.id ||
+        (!product?.allowPurchasingByLevel &&
+            product?.withLevel)
+        ||
+        product?.campaign?.status !== CampaignStatuses.STARTING.id;
+};
+
+const fullBookFormats = Object.values(BookFormats);
+
+
+export function getBookFormatOptions(book: IBook | undefined) {
+    if (!book) {
+        return [];
+    }
+    if (book?.fullPdfAndAudio) {
+        return fullBookFormats;
+    }
+    if (book?.onlyPdf) {
+        return fullBookFormats.filter(o => o.id !== BookFormats.AUDIO.id);
+    }
+    if (book?.onlyAudio) {
+        return fullBookFormats.filter(o => o.id !== BookFormats.PDF.id);
+    }
+    return fullBookFormats.filter(o => o.id === BookFormats.PAPER.id);
+}
+
+export function getBookFormatPrice(book: IBook | undefined, format: IBookFormat) {
+    if (!book) {
+        return 0;
+    }
+    if (format.id === BookFormats.PAPER.id) {
+        return book.coverPrice;
+    }
+    if (format.id === BookFormats.PDF.id) {
+        return book.pdfExtraPrice;
+    }
+    if (format.id === BookFormats.AUDIO.id) {
+        return book.audioExtraPrice;
+    }
+}
+
+export function getBookProductFormatPrice(book: IBookProduct | undefined, format: IBookFormat) {
+    if (!book) {
+        return 0;
+    }
+    if (format.id === BookFormats.PAPER.id) {
+        return book.salePrice;
+    }
+    if (format.id === BookFormats.PDF.id) {
+        return book.pdfExtraPrice;
+    }
+    if (format.id === BookFormats.AUDIO.id) {
+        return book.audioExtraPrice;
+    }
+}
+
+
+export function getBookProductsFormatOptions(book: IBookProduct | undefined, campaignFormatId: number | undefined) {
+    if (!book) {
+        return [];
+    }
+    if (campaignFormatId === CampaignFormats.OFFLINE.id) {
+        return fullBookFormats.filter(o => o.id === BookFormats.PAPER.id);
+    }
+
+    if (book?.fullPdfAndAudio) {
+        return fullBookFormats;
+    }
+    if (book?.onlyPdf) {
+        return fullBookFormats.filter(o => o.id !== BookFormats.AUDIO.id);
+    }
+    if (book?.onlyAudio) {
+        return fullBookFormats.filter(o => o.id !== BookFormats.PDF.id);
+    }
+    return fullBookFormats.filter(o => o.id === BookFormats.PAPER.id);
+}
+
+export const isValidImageSrc = (src: string): boolean => {
+    return z.string().url().safeParse(src).success;
+};
+
+export function getRequestDateTime(date: Date) {
+    return format(date, "yyyy-MM-dd'T'HH:mm:ss");
+}
+
+export function isImageFile(file: File) {
+    return file.type.startsWith("image");
+}
+
+export function isValidFileSize(file: File, maxSizeInMb: number) {
+    return file.size <= maxSizeInMb * 1024 * 1024;
+}
+
+function randomColor(name?: string | undefined): string {
+    return hexColors[name ? name?.length % hexColors.length : 0];
+}
+
+export function getAvatarFromName(
+    name?: string | undefined,
+    length?: number,
+): string {
+    const backgroundColor = randomColor(name);
+    return `https://ui-avatars.com/api/?name=${
+        name ? name : ""
+    }&color=FFFFFF&background=${backgroundColor}&length=${
+        length ? length : 2
+    }&format=svg`;
+}
+=======
+import { format } from 'date-fns';
+import { vi } from 'date-fns/locale';
+import slugify from 'slugify';
+>>>>>>> 81b386be539aa08eeec739e7538994cf541875cb
+
+export function isInViewPort(element: Element): boolean {
+    const rect = element.getBoundingClientRect();
+    const html = document.documentElement;
+    return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || html.clientHeight) &&
+        rect.right <= (window.innerWidth || html.clientWidth)
+    );
+}
+
+const defaultLocaleFormat = { locale: vi };
+
+export function getFormattedDate(
+    dateStr: string | undefined,
+    localeFormat: {
+        locale: Locale;
+<<<<<<< HEAD
+    } = defaultLocaleFormat,
+) {
+    const date = dateStr ? new Date(dateStr) : undefined;
+    return {
+        dayOfWeek: date ? format(date, "eeee", localeFormat) : "N/A",
+        day: date ? format(date, "dd", localeFormat) : "N/A",
+        month: date ? format(date, "MM", localeFormat) : "N/A",
+        year: date ? format(date, "yyyy", localeFormat) : "N/A",
+        withoutDayOfWeek: date
+            ? format(date, "dd/MM/yyyy", localeFormat)
+            : "N/A",
+        fullDate: date ? format(date, "eeee, dd/MM/yyyy", localeFormat) : "N/A",
+    };
+}
+
+export function getFormattedTime(
+    dateStr: string | undefined,
+    formatType: string,
+) {
+    const dateObj = dateStr ? new Date(dateStr) : undefined;
+    return dateObj ? format(dateObj, formatType, defaultLocaleFormat) : "N/A";
+}
+
+const slugifyOptions = {
+    replacement: "-",
+    remove: /[*+~.()'"!:@]/g,
+    lower: true,
+    strict: true,
+    locale: "vi",
+=======
+    } = defaultLocaleFormat
+) {
+    const date = dateStr ? new Date(dateStr) : undefined;
+    return {
+        dayOfWeek: date ? format(date, 'eeee', localeFormat) : 'N/A',
+        day: date ? format(date, 'dd', localeFormat) : 'N/A',
+        month: date ? format(date, 'MM', localeFormat) : 'N/A',
+        year: date ? format(date, 'yyyy', localeFormat) : 'N/A',
+        withoutDayOfWeek: date
+            ? format(date, 'dd/MM/yyyy', localeFormat)
+            : 'N/A',
+        fullDate: date ? format(date, 'eeee, dd/MM/yyyy', localeFormat) : 'N/A',
+    };
+}
+const slugifyOptions = {
+    replacement: '-',
+    remove: /[*+~.()'"!:@]/g,
+    lower: true,
+    strict: true,
+    locale: 'vi',
+>>>>>>> 81b386be539aa08eeec739e7538994cf541875cb
+    trim: true,
+};
+
+export function getSlug(str?: string) {
+<<<<<<< HEAD
+    return slugify(str || "", slugifyOptions);
+=======
+    return slugify(str || '', slugifyOptions);
+>>>>>>> 81b386be539aa08eeec739e7538994cf541875cb
+}
+
+export function getSlugUrl(
+    rootPath?: string,
+    title?: string,
+<<<<<<< HEAD
+    id?: number | string,
+=======
+    id?: number | string
+>>>>>>> 81b386be539aa08eeec739e7538994cf541875cb
+) {
+    return `${rootPath}/${getSlug(title)}/${id}`;
+}
+
+export function getFormattedPrice(number: number) {
+<<<<<<< HEAD
+    return new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+=======
+    return new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND',
+>>>>>>> 81b386be539aa08eeec739e7538994cf541875cb
+    }).format(number);
+}
+
+export function isValidPhoneNumber(phoneNumber: string) {
+    return /^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/.test(
+<<<<<<< HEAD
+        phoneNumber,
+    );
+}
+
+export function getFormatsOfBook(
+    book: IBook | IBookProduct | undefined,
+): IBookFormat[] {
+    if (!book) return [];
+    const formats: IBookFormat[] = [BookFormats.PAPER];
+    if (book.fullPdfAndAudio) {
+        formats.push(BookFormats.PDF);
+        formats.push(BookFormats.AUDIO);
+    }
+    if (book.onlyPdf) {
+        formats.push(BookFormats.PDF);
+    }
+    if (book.onlyAudio) {
+        formats.push(BookFormats.AUDIO);
+    }
+    return formats;
+}
+
+export function getIntersectedArray<T>(arr1: T[], arr2: T[]): T[] {
+    return arr1.filter((item) => arr2.includes(item));
+}
+
+export function getIntersectedFormatOfBooks(books: IBook[]): IBookFormat[] {
+    if (!books || books.length === 0) return [];
+    const formatsOfBooks = books.map((book) => getFormatsOfBook(book));
+    return formatsOfBooks.reduce((prev, curr) =>
+        getIntersectedArray(prev, curr),
+    );
+}
+
+export const VIETNAMESE_PHONE_REGEX =
+    /^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/;
+=======
+        phoneNumber
+    );
+}
+>>>>>>> 81b386be539aa08eeec739e7538994cf541875cb

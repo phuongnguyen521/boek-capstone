@@ -1,0 +1,14 @@
+{
+<<<<<<< HEAD
+  "typescript.tsdk": "node_modules\\.pnpm\\typescript@5.0.4\\node_modules\\typescript\\lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
+}
+=======
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "typescript.tsdk": "node_modules\\typescript\\lib",
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    }
+}
+>>>>>>> 81b386be539aa08eeec739e7538994cf541875cb
